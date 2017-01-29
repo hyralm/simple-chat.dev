@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "Node JS App"
+  },
+  "port": 3000,
+  "mongoose": {
+    "uri": "mongodb://localhost/db_name",
+    "options": {
+      "server": {
+        "socketOptions": {
+          "keepAlive": 1
+        }
+      }
+    }
+  },
+  "session": {
+    "name": "connect.sid",
+    "secret": "session_secret",
+    "cookie": {
+      "path": "/",
+      "httpOnly": true,
+      "maxAge": null
+    },
+    "resave": false,
+    "saveUninitialized": false
+  }
+}
