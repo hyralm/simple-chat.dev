@@ -1,0 +1,23 @@
+<% layout('../layouts/app'); %>
+<% block('title', 'Chat'); %>
+<% let scripts = `
+    <script src="/socket.io/socket.io.js">
+    </script><script src="/js/chat/main.js"></script>
+`; %>
+<% block('scripts', scripts); %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Chat</h2>
+            <div id="room">
+                <ul></ul>
+                <form>
+                    <input type="text" class="form-control" autocomplete="off" autofocus placeholder="Message...">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+

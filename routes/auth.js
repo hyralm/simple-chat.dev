@@ -3,7 +3,9 @@ const User = require('../models/user').User;
 const AuthError = require('../errors').AuthError;
 const router = express.Router();
 
-router.get('/login', function (req, res, next) {
+const checkGuest = require('../middlewares/checkGuest');
+
+router.get('/login', checkGuest, function (req, res, next) {
     let data = {
         error: req.session.error
     };
@@ -11,7 +13,7 @@ router.get('/login', function (req, res, next) {
     res.render('auth/login', data);
 });
 
-router.post('/login', function (req, res, next) {
+router.post('/login', checkGuest, function (req, res, next) {
     let username = req.body.username;
     let password = req.body.password;
     if (username && password) {
@@ -34,8 +36,13 @@ router.post('/login', function (req, res, next) {
 });
 
 router.post('/logout', function (req, res, next) {
-    req.session.destroy();
-    res.redirect('/login');
+    let io = req.app.get('io');
+    let sid = req.session.user;
+    req.session.destroy(function (err) {
+        io.sockets._events['session:reload'](sid);
+        if (err) return next(err);
+        res.redirect('/login');
+    });
 });
 
 module.exports = router;

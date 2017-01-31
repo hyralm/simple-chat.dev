@@ -1,6 +1,9 @@
 ## Requirements
 
 - Node.js
+- Express
+- Socket.IO
+- MongoDB
 
 ## Deploy
 

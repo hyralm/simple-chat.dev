@@ -11,9 +11,9 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const mongoStore = require('connect-mongo')(session);
 
 const config = require('./config');
+const sessionStore = require('./libs/sessionStore');
 
 /**
  * Middleware dependencies.
@@ -24,6 +24,7 @@ const loadUsers = require('./middlewares/loadUser');
  * Route dependencies.
  */
 const auth = require('./routes/auth');
+const chat = require('./routes/chat');
 const index = require('./routes/index');
 const users = require('./routes/users');
 
@@ -52,7 +53,7 @@ app.use(session({
     cookie: config.get('session:cookie'),
     resave: config.get('session:resave'),
     saveUninitialized: config.get('session:saveUninitialized'),
-    store: new mongoStore({mongooseConnection: mongoose.connection})
+    store: sessionStore
 }));
 app.use(loadUsers);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -62,6 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 app.use('/', auth);
 app.use('/', index);
+app.use('/chat', chat);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
